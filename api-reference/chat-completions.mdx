@@ -1,0 +1,49 @@
+---
+title: "POST /chat/completions"
+description: "Create a chat completion using an OpenAI-compatible request format."
+---
+
+# POST /chat/completions
+
+Create a model response from a chat-style message list.
+
+## Request
+
+```bash
+curl https://api.routestack.cn/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_ROUTESTACK_TOKEN" \
+  -d '{
+    "model": "gpt-4o-mini",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a one-line welcome message."
+      }
+    ]
+  }'
+```
+
+## Response
+
+```json
+{
+  "id": "chatcmpl-example",
+  "object": "chat.completion",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Welcome to RouteStack."
+      },
+      "finish_reason": "stop"
+    }
+  ]
+}
+```
+
+## Notes
+
+- model access depends on token and user group permissions
+- quota deduction depends on model pricing and group pricing rules

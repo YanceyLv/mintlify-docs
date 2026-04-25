@@ -1,0 +1,35 @@
+---
+title: "POST /responses"
+description: "Create a response using the responses-style API."
+---
+
+# POST /responses
+
+Create a response using a responses-style payload.
+
+## Request
+
+```bash
+curl https://api.routestack.cn/v1/responses \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_ROUTESTACK_TOKEN" \
+  -d '{
+    "model": "gpt-4.1-mini",
+    "input": "Summarize RouteStack in one sentence."
+  }'
+```
+
+## Response
+
+```json
+{
+  "id": "resp_example",
+  "object": "response",
+  "output_text": "RouteStack unifies multi-model AI access behind one stable API."
+}
+```
+
+## Notes
+
+- use this endpoint when your client expects responses-style payloads
+- support may vary depending on your enabled upstream channels

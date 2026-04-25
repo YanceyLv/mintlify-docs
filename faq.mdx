@@ -1,0 +1,41 @@
+---
+title: "FAQ"
+description: "Common RouteStack questions and troubleshooting notes."
+---
+
+# FAQ
+
+## Why does my request return 401?
+
+Check the following:
+
+- the token is present
+- the token is valid
+- the token belongs to an enabled user
+
+## Why is a model missing from `/v1/models`?
+
+Possible reasons:
+
+- the model is disabled
+- your token has model limits
+- your user group does not have access
+
+## Why was more quota deducted than expected?
+
+Quota deduction can be affected by:
+
+- model pricing
+- model multiplier
+- user group multiplier
+- special group pricing rules
+
+## Where should I look when debugging?
+
+Open:
+
+```text
+Console -> Usage Logs
+```
+
+That page shows model, channel, request outcome, and quota usage.

@@ -1,0 +1,36 @@
+---
+title: "API Overview"
+description: "RouteStack provides an OpenAI-compatible API surface for multiple model providers."
+---
+
+# API Overview
+
+RouteStack exposes an OpenAI-compatible API for common AI workloads.
+
+## Base URL
+
+Production:
+
+```text
+https://api.routestack.cn/v1
+```
+
+Local:
+
+```text
+http://127.0.0.1:3000/v1
+```
+
+## Common endpoints
+
+- `GET /models`
+- `POST /chat/completions`
+- `POST /responses`
+
+## Authentication
+
+All requests require:
+
+```http
+Authorization: Bearer YOUR_ROUTESTACK_TOKEN
+```

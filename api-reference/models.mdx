@@ -1,0 +1,35 @@
+---
+title: "GET /models"
+description: "List models available to the current token."
+---
+
+# GET /models
+
+Returns the list of models visible to the current token.
+
+## Request
+
+```bash
+curl https://api.routestack.cn/v1/models \
+  -H "Authorization: Bearer YOUR_ROUTESTACK_TOKEN"
+```
+
+## Response
+
+```json
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "gpt-4o-mini",
+      "object": "model",
+      "owned_by": "routestack"
+    }
+  ]
+}
+```
+
+## Notes
+
+- the list depends on user group and token permissions
+- disabled models do not appear

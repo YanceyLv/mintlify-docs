@@ -1,0 +1,42 @@
+---
+title: "Pricing"
+description: "Learn how RouteStack handles balance, quota, pricing, and model multipliers."
+---
+
+# Pricing
+
+RouteStack separates recharge from model consumption.
+
+## Core concepts
+
+- users recharge into a shared balance or quota pool
+- different models consume quota at different rates
+- different user groups can have different discounts
+
+## Pricing layers
+
+### Recharge pricing
+
+Recharge pricing controls how much balance or quota a user gets for a payment.
+
+### Model pricing
+
+Model pricing controls how much quota is deducted for each request.
+
+### Group pricing
+
+Group pricing lets you apply different multipliers to different user tiers.
+
+## Example
+
+If the same request has a base cost of `100` quota:
+
+- model multiplier `1.0` deducts `100`
+- model multiplier `3.0` deducts `300`
+- if the user group multiplier is `0.8`, the final cost becomes `240`
+
+## Recommended setup
+
+- keep recharge logic simple
+- use model pricing for product differentiation
+- use group pricing for membership discounts

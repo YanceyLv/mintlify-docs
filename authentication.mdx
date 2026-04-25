@@ -1,0 +1,49 @@
+---
+title: "Authentication"
+description: "Use RouteStack tokens to authenticate API requests."
+---
+
+# Authentication
+
+RouteStack uses bearer token authentication.
+
+## Header format
+
+Send your token in the `Authorization` header:
+
+```http
+Authorization: Bearer YOUR_ROUTESTACK_TOKEN
+```
+
+## Where to create tokens
+
+In the console:
+
+```text
+Console -> Token Management
+```
+
+## Token recommendations
+
+- create different tokens for production and testing
+- rotate tokens if a key may have leaked
+- apply model limits when a token should only access specific models
+
+## Common authentication errors
+
+### 401 Unauthorized
+
+Usually caused by one of the following:
+
+- the token is missing
+- the token is invalid
+- the token has expired
+- the user behind the token is disabled
+
+### Model not available
+
+This often means:
+
+- the token has model restrictions
+- your user group cannot use that model
+- the model is disabled by the platform
