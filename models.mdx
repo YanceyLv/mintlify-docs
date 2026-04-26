@@ -1,38 +1,57 @@
 ---
-title: "Models"
-description: "Understand what models are available and how access is controlled in RouteStack."
+title: "模型说明"
+description: "了解 RouteStack 中的模型列表、模型权限和模型选择建议。"
 ---
 
-# Models
+# 模型说明
 
-RouteStack can expose different model families through one unified API surface.
+RouteStack 可以把多个模型供应商聚合到同一个 API 入口。用户侧只需要传入模型名称，平台会根据配置选择对应渠道进行请求。
 
-## Typical model categories
+## 查看可用模型
 
-- general chat models
-- reasoning models
-- multimodal models
-- embeddings models
-- image generation models
-- audio models
+你可以通过接口查看当前 API Key 可用的模型：
 
-## Model access control
+```bash
+curl https://api.routestack.cn/v1/models \
+  -H "Authorization: Bearer YOUR_ROUTESTACK_TOKEN"
+```
 
-Model availability can be controlled by:
+也可以在控制台的模型相关页面查看平台开放的模型列表。
 
-- user group
-- token-level model restrictions
-- global model enablement
+## 模型为什么会不一样
 
-## Best practices
+不同用户看到的模型列表可能不同，这是正常的。RouteStack 支持按以下维度控制模型可用性：
 
-- start with a small set of models
-- separate low-cost and premium models clearly
-- document recommended use cases for each model
+- 用户分组
+- API Key 限制
+- 模型全局开关
+- 渠道状态
+- 余额和额度限制
 
-## Example model strategy
+## 常见模型类型
 
-- `gpt-4o-mini` for low-cost general chat
-- `gpt-4.1` for higher quality reasoning
-- `claude-3-5-sonnet` for writing and analysis
-- `gemini-2.5-pro` for broader multimodal tasks
+| 类型 | 说明 |
+| --- | --- |
+| 聊天模型 | 适合对话、问答、文本生成 |
+| 推理模型 | 适合复杂分析、数学、代码和长链路推理 |
+| 多模态模型 | 支持图片、文本等多种输入 |
+| Embeddings 模型 | 用于向量检索、语义搜索、RAG |
+| 图像模型 | 用于生成或编辑图片 |
+| 音频模型 | 用于语音识别、语音生成等场景 |
+
+## 模型选择建议
+
+- 日常聊天和低成本任务：优先选择轻量模型
+- 代码、复杂分析、长文本：选择更强的推理或旗舰模型
+- 批量任务：优先选择价格稳定、速度快的模型
+- 生产业务：建议准备备用模型，避免单一渠道异常影响服务
+
+## 模型不可用怎么办
+
+如果请求返回模型不可用，请检查：
+
+1. API Key 是否限制了模型
+2. 当前用户分组是否允许该模型
+3. 控制台中模型是否开启
+4. 渠道是否正常
+5. 账号余额是否充足

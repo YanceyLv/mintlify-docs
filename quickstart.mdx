@@ -1,42 +1,52 @@
 ---
-title: "Quick Start"
-description: "Get your first RouteStack request working in minutes."
+title: "快速开始"
+description: "从创建 API Key 到完成第一次模型请求。"
 ---
 
-# Quick Start
+# 快速开始
 
-This guide gets you from token creation to a successful API call.
+本页会带你完成一次最基础的 RouteStack 调用。
 
-## Step 1: Get your token
+## 1. 创建 API Key
 
-In the RouteStack console:
+登录 RouteStack 后进入：
 
-1. Open `Console -> Token Management`
-2. Create a new token
-3. Copy the token value and keep it safe
+```text
+控制台 -> 令牌管理
+```
 
-## Step 2: Confirm your base URL
+点击创建令牌，复制生成的 Key。请妥善保存，API Key 只应该提供给可信的服务端或开发环境。
 
-Use your RouteStack API base URL:
+## 2. 配置 Base URL
+
+如果你原来使用 OpenAI 官方接口，通常配置类似：
+
+```text
+https://api.openai.com/v1
+```
+
+接入 RouteStack 后，将 Base URL 替换为：
 
 ```text
 https://api.routestack.cn/v1
 ```
 
-For local development, you may use:
+本地调试时可以使用：
 
 ```text
 http://127.0.0.1:3000/v1
 ```
 
-## Step 3: List available models
+## 3. 查看可用模型
 
 ```bash
 curl https://api.routestack.cn/v1/models \
   -H "Authorization: Bearer YOUR_ROUTESTACK_TOKEN"
 ```
 
-## Step 4: Send your first chat request
+如果返回模型列表，说明认证和基础连接已经正常。
+
+## 4. 发送聊天请求
 
 ```bash
 curl https://api.routestack.cn/v1/chat/completions \
@@ -47,22 +57,62 @@ curl https://api.routestack.cn/v1/chat/completions \
     "messages": [
       {
         "role": "user",
-        "content": "Hello from RouteStack"
+        "content": "你好，RouteStack"
       }
     ]
   }'
 ```
 
-## Step 5: Verify the request in console
+## 5. 在控制台检查日志
 
-After the request succeeds:
+请求完成后，进入：
 
-1. Open `Console -> Usage Logs`
-2. Confirm the request appears in the logs
-3. Check the model, channel, and quota deduction
+```text
+控制台 -> 使用日志
+```
 
-## What to do next
+你可以看到请求时间、模型、渠道、消耗额度和请求状态。
 
-- Read [Authentication](/authentication)
-- Review [Models](/models)
-- Understand [Pricing](/pricing)
+## 常见接入方式
+
+### OpenAI SDK
+
+```js
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.ROUTESTACK_API_KEY,
+  baseURL: "https://api.routestack.cn/v1",
+});
+
+const completion = await client.chat.completions.create({
+  model: "gpt-4o-mini",
+  messages: [{ role: "user", content: "Hello RouteStack" }],
+});
+
+console.log(completion.choices[0].message.content);
+```
+
+### Python SDK
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_ROUTESTACK_TOKEN",
+    base_url="https://api.routestack.cn/v1",
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "Hello RouteStack"}],
+)
+
+print(response.choices[0].message.content)
+```
+
+## 下一步
+
+- 阅读 [认证方式](/authentication)
+- 查看 [模型说明](/models)
+- 理解 [计费说明](/pricing)

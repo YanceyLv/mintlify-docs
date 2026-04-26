@@ -1,36 +1,46 @@
 ---
-title: "Introduction"
-description: "RouteStack is a unified AI gateway for routing OpenAI-compatible requests across multiple model providers."
+title: "RouteStack 文档"
+description: "RouteStack 是一个兼容 OpenAI API 的多模型中转网关，帮助用户统一接入、管理密钥、查看用量并控制模型访问。"
 ---
 
-# RouteStack
+# RouteStack 文档
 
-RouteStack is a unified AI gateway for teams and developers who want one stable entrypoint for multiple model providers.
+RouteStack 是一个统一的大模型 API 网关。你可以把它理解为一个稳定的中转入口：应用侧只需要对接 RouteStack 的 API 地址，就可以根据账号权限调用不同供应商、不同价格层级的模型。
 
-With RouteStack you can:
+## 你可以用 RouteStack 做什么
 
-- call multiple models through one API base URL
-- manage users, tokens, and usage from one console
-- control model access by user group or token
-- apply your own pricing, quota, and billing logic
+- 使用统一的 API Base URL 调用多个模型供应商
+- 在控制台创建和管理 API Key
+- 查看请求日志、模型用量、Token 消耗和扣费记录
+- 根据账号、分组或令牌控制可用模型
+- 通过余额、倍率和分组折扣管理不同用户的使用成本
 
-## What you need first
+## 适合谁使用
 
-Before you start, make sure you already have:
+- 需要一个稳定 API 入口的开发者
+- 需要给团队成员分配模型权限的团队
+- 需要统一查看模型调用、用量和扣费记录的管理员
+- 需要同时接入多个模型供应商的产品方
 
-- a RouteStack account
-- at least one API token
-- the base URL for your environment
+## 常用入口
 
-## Common entrypoints
+| 入口 | 地址 |
+| --- | --- |
+| 控制台 | `https://routestack.cn/console` |
+| 文档 | `https://docs.routestack.cn` |
+| API Base URL | `https://api.routestack.cn/v1` |
+| 本地开发地址 | `http://127.0.0.1:3000/v1` |
 
-- Console: `https://routestack.cn/console`
-- Docs: `https://docs.routestack.cn`
-- API base URL: `https://api.routestack.cn/v1`
+<Note>
+  如果你当前还没有正式域名，可以先使用平台首页展示的 Base URL 或本地地址进行调试。
+</Note>
 
-## Next steps
+## 第一次使用
 
-1. Read [Quick Start](/quickstart)
-2. Create or copy your API token in the console
-3. Test [GET /v1/models](/api-reference/models)
-4. Send your first [POST /v1/chat/completions](/api-reference/chat-completions)
+1. 登录 RouteStack 控制台
+2. 进入 `控制台 -> 令牌管理`
+3. 创建一个 API Key
+4. 将原项目中的 OpenAI Base URL 改为 RouteStack 的 Base URL
+5. 使用 `/v1/models` 或 `/v1/chat/completions` 测试请求
+
+下一步建议先阅读 [快速开始](/quickstart)。

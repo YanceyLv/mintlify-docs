@@ -1,42 +1,74 @@
 ---
-title: "Pricing"
-description: "Learn how RouteStack handles balance, quota, pricing, and model multipliers."
+title: "计费说明"
+description: "理解 RouteStack 的余额、额度、模型倍率和用户分组折扣。"
 ---
 
-# Pricing
+# 计费说明
 
-RouteStack separates recharge from model consumption.
+RouteStack 的计费可以理解为两层：用户先充值获得余额或额度，请求模型时再根据模型价格、倍率和分组规则扣减。
 
-## Core concepts
+## 基础概念
 
-- users recharge into a shared balance or quota pool
-- different models consume quota at different rates
-- different user groups can have different discounts
+| 概念 | 说明 |
+| --- | --- |
+| 余额 / 额度 | 用户可用于调用模型的账户资源 |
+| 模型倍率 | 不同模型消耗额度的相对系数 |
+| 分组倍率 | 不同用户分组的折扣或加价规则 |
+| 用量日志 | 每次请求产生的消耗记录 |
 
-## Pricing layers
+## 倍率怎么理解
 
-### Recharge pricing
+假设一次基础请求成本为 `100` 额度：
 
-Recharge pricing controls how much balance or quota a user gets for a payment.
+| 模型倍率 | 分组倍率 | 实际扣除 |
+| --- | --- | --- |
+| `1.0` | `1.0` | `100` |
+| `2.0` | `1.0` | `200` |
+| `3.0` | `0.8` | `240` |
+| `0.5` | `1.0` | `50` |
 
-### Model pricing
+简单理解：
 
-Model pricing controls how much quota is deducted for each request.
+```text
+实际扣费 = 基础消耗 × 模型倍率 × 分组倍率
+```
 
-### Group pricing
+## 为什么不同模型价格不同
 
-Group pricing lets you apply different multipliers to different user tiers.
+不同模型的供应商成本、上下文长度、推理能力和多模态能力不同，所以建议给不同模型配置不同倍率。
 
-## Example
+常见策略：
 
-If the same request has a base cost of `100` quota:
+- 轻量模型：倍率低，适合高频调用
+- 旗舰模型：倍率高，适合高质量任务
+- 图像/音频模型：单独配置价格，避免和文本模型混淆
+- 高成本模型：限制给指定分组或指定令牌使用
 
-- model multiplier `1.0` deducts `100`
-- model multiplier `3.0` deducts `300`
-- if the user group multiplier is `0.8`, the final cost becomes `240`
+## 用户充值怎么处理
 
-## Recommended setup
+平台可以先设置一个统一的充值规则，然后通过模型倍率控制不同模型的消耗差异。
 
-- keep recharge logic simple
-- use model pricing for product differentiation
-- use group pricing for membership discounts
+例如：
+
+- 用户充值获得 `100000` 额度
+- 低成本模型每次消耗少
+- 高级模型每次消耗多
+- VIP 分组可以设置更低分组倍率
+
+## 用户在哪里查看扣费
+
+进入控制台：
+
+```text
+控制台 -> 使用日志
+```
+
+用户可以查看每次请求的模型、时间、状态和消耗情况。
+
+## 管理员建议
+
+- 先用简单倍率上线，不要一开始配置得太复杂
+- 给高成本模型设置更高倍率
+- 给测试用户设置单独分组
+- 定期检查使用日志和渠道成本
+- 明确告诉用户不同模型消耗不同

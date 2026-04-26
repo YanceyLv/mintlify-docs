@@ -1,20 +1,27 @@
 ---
 title: "GET /models"
-description: "List models available to the current token."
+description: "获取当前 API Key 可用的模型列表。"
 ---
 
 # GET /models
 
-Returns the list of models visible to the current token.
+返回当前 API Key 可以访问的模型列表。这个列表会受到用户分组、令牌限制、模型开关和渠道配置影响。
 
-## Request
+## 请求
 
 ```bash
 curl https://api.routestack.cn/v1/models \
   -H "Authorization: Bearer YOUR_ROUTESTACK_TOKEN"
 ```
 
-## Response
+本地开发时可以把地址替换为：
+
+```bash
+curl http://127.0.0.1:3000/v1/models \
+  -H "Authorization: Bearer YOUR_ROUTESTACK_TOKEN"
+```
+
+## 响应示例
 
 ```json
 {
@@ -24,12 +31,32 @@ curl https://api.routestack.cn/v1/models \
       "id": "gpt-4o-mini",
       "object": "model",
       "owned_by": "routestack"
+    },
+    {
+      "id": "claude-3-5-sonnet",
+      "object": "model",
+      "owned_by": "routestack"
     }
   ]
 }
 ```
 
-## Notes
+## 字段说明
 
-- the list depends on user group and token permissions
-- disabled models do not appear
+| 字段 | 说明 |
+| --- | --- |
+| `id` | 调用模型时使用的模型名称 |
+| `object` | 对象类型，通常为 `model` |
+| `owned_by` | 模型归属展示字段 |
+
+## 为什么模型列表为空
+
+常见原因包括：
+
+- API Key 无效。
+- 当前用户没有可用模型。
+- API Key 单独限制了模型范围。
+- 平台没有启用对应模型或渠道。
+- 当前账号余额不足、被禁用或分组权限不匹配。
+
+如果你是管理员，可以到控制台检查模型管理、渠道管理、用户分组和令牌配置。

@@ -1,41 +1,76 @@
 ---
-title: "FAQ"
-description: "Common RouteStack questions and troubleshooting notes."
+title: "常见问题"
+description: "RouteStack 接入、认证、模型和计费相关常见问题。"
 ---
 
-# FAQ
+# 常见问题
 
-## Why does my request return 401?
+## RouteStack 是什么？
 
-Check the following:
+RouteStack 是一个大模型 API 中转网关。它提供统一的 API 入口，让用户通过一个 Base URL 调用多个模型供应商。
 
-- the token is present
-- the token is valid
-- the token belongs to an enabled user
+## 和 OpenAI API 兼容吗？
 
-## Why is a model missing from `/v1/models`?
+RouteStack 主要提供 OpenAI 兼容接口。大多数支持自定义 `baseURL` 的 OpenAI SDK、客户端和应用都可以接入。
 
-Possible reasons:
+## Base URL 应该填什么？
 
-- the model is disabled
-- your token has model limits
-- your user group does not have access
-
-## Why was more quota deducted than expected?
-
-Quota deduction can be affected by:
-
-- model pricing
-- model multiplier
-- user group multiplier
-- special group pricing rules
-
-## Where should I look when debugging?
-
-Open:
+正式环境一般使用：
 
 ```text
-Console -> Usage Logs
+https://api.routestack.cn/v1
 ```
 
-That page shows model, channel, request outcome, and quota usage.
+本地调试可以使用：
+
+```text
+http://127.0.0.1:3000/v1
+```
+
+如果平台首页展示了其他地址，请以首页展示为准。
+
+## 为什么请求返回 401？
+
+请检查：
+
+- 是否传了 `Authorization` 请求头
+- 格式是否为 `Bearer YOUR_TOKEN`
+- API Key 是否复制完整
+- API Key 是否仍然有效
+- 用户账号是否被禁用
+
+## 为什么模型不可用？
+
+可能原因包括：
+
+- 模型没有开启
+- 你的用户分组没有权限
+- API Key 限制了可用模型
+- 渠道异常或模型供应商不可用
+- 余额不足
+
+## 为什么扣费比预期高？
+
+扣费会受到模型倍率、分组倍率、请求 Token 数、图片/音频等特殊计费方式影响。请到 `使用日志` 中查看具体消耗。
+
+## 如何查看请求是否成功？
+
+进入：
+
+```text
+控制台 -> 使用日志
+```
+
+可以查看请求状态、模型、渠道、消耗和错误信息。
+
+## 可以给不同用户分配不同模型吗？
+
+可以。管理员可以通过用户分组、令牌限制和模型配置控制不同用户可使用的模型范围。
+
+## API Key 泄露了怎么办？
+
+立即删除泄露的 API Key，并创建新的 Key。建议为不同项目创建不同 Key，方便定位风险。
+
+## 文档里的域名还没正式上线怎么办？
+
+如果正式域名还没启用，可以先用本地地址或当前部署地址测试。等域名完成解析和 HTTPS 配置后，再把文档中的示例地址替换为正式地址。

@@ -1,13 +1,13 @@
 ---
 title: "POST /chat/completions"
-description: "Create a chat completion using an OpenAI-compatible request format."
+description: "使用 OpenAI 兼容格式创建聊天补全。"
 ---
 
 # POST /chat/completions
 
-Create a model response from a chat-style message list.
+聊天补全接口适合对话、问答、文本生成、代码生成、分类和摘要等场景。它是目前兼容性最好的调用方式。
 
-## Request
+## 请求
 
 ```bash
 curl https://api.routestack.cn/v1/chat/completions \
@@ -17,14 +17,46 @@ curl https://api.routestack.cn/v1/chat/completions \
     "model": "gpt-4o-mini",
     "messages": [
       {
+        "role": "system",
+        "content": "You are a helpful assistant."
+      },
+      {
         "role": "user",
-        "content": "Write a one-line welcome message."
+        "content": "用一句话介绍 RouteStack。"
       }
-    ]
+    ],
+    "temperature": 0.7
   }'
 ```
 
-## Response
+## 请求参数
+
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `model` | string | 是 | 要调用的模型名称 |
+| `messages` | array | 是 | 对话消息列表 |
+| `temperature` | number | 否 | 控制输出随机性，数值越高越发散 |
+| `stream` | boolean | 否 | 是否使用流式输出 |
+| `max_tokens` | number | 否 | 限制输出长度 |
+
+## messages 格式
+
+```json
+[
+  {
+    "role": "system",
+    "content": "You are a helpful assistant."
+  },
+  {
+    "role": "user",
+    "content": "你好"
+  }
+]
+```
+
+常见角色包括 `system`、`user` 和 `assistant`。
+
+## 响应示例
 
 ```json
 {
@@ -35,15 +67,39 @@ curl https://api.routestack.cn/v1/chat/completions \
       "index": 0,
       "message": {
         "role": "assistant",
-        "content": "Welcome to RouteStack."
+        "content": "RouteStack 是一个统一的大模型 API 网关。"
       },
       "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 20,
+    "completion_tokens": 12,
+    "total_tokens": 32
+  }
+}
+```
+
+## 流式请求
+
+```json
+{
+  "model": "gpt-4o-mini",
+  "stream": true,
+  "messages": [
+    {
+      "role": "user",
+      "content": "请分三点介绍 RouteStack"
     }
   ]
 }
 ```
 
-## Notes
+开启 `stream` 后，服务端会以流式方式返回结果，适合聊天窗口、实时生成和长文本输出。
 
-- model access depends on token and user group permissions
-- quota deduction depends on model pricing and group pricing rules
+## 使用建议
+
+- 调用前先用 `GET /models` 确认可用模型。
+- 生产环境不要把 API Key 暴露在前端页面。
+- 如果请求失败，优先查看控制台的使用日志。
+- 实际扣费取决于模型倍率、分组倍率和 Token 用量。

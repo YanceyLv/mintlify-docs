@@ -1,49 +1,69 @@
 ---
-title: "Authentication"
-description: "Use RouteStack tokens to authenticate API requests."
+title: "认证方式"
+description: "RouteStack 使用 Bearer Token 认证 API 请求。"
 ---
 
-# Authentication
+# 认证方式
 
-RouteStack uses bearer token authentication.
+RouteStack API 使用 Bearer Token 认证。每次请求都需要在请求头中携带 API Key。
 
-## Header format
-
-Send your token in the `Authorization` header:
+## 请求头格式
 
 ```http
 Authorization: Bearer YOUR_ROUTESTACK_TOKEN
 ```
 
-## Where to create tokens
+完整示例：
 
-In the console:
-
-```text
-Console -> Token Management
+```bash
+curl https://api.routestack.cn/v1/models \
+  -H "Authorization: Bearer YOUR_ROUTESTACK_TOKEN"
 ```
 
-## Token recommendations
+## API Key 从哪里获取
 
-- create different tokens for production and testing
-- rotate tokens if a key may have leaked
-- apply model limits when a token should only access specific models
+进入控制台：
 
-## Common authentication errors
+```text
+控制台 -> 令牌管理
+```
+
+你可以创建多个令牌，用于不同项目、不同环境或不同团队成员。
+
+## 建议的令牌管理方式
+
+- 测试环境和生产环境使用不同 API Key
+- 不要把 API Key 写进前端代码
+- 不要把 API Key 上传到 GitHub
+- 如果怀疑泄露，立即删除旧 Key 并创建新 Key
+- 给不同用户或业务创建独立 Key，便于追踪用量
+
+## 模型权限
+
+API Key 能调用哪些模型，取决于平台配置：
+
+- 用户所在分组
+- 令牌自身是否限制模型
+- 模型是否在平台侧启用
+- 账号余额或额度是否充足
+
+如果你调用某个模型失败，优先检查控制台中的令牌配置和用户分组。
+
+## 常见错误
 
 ### 401 Unauthorized
 
-Usually caused by one of the following:
+通常是以下原因：
 
-- the token is missing
-- the token is invalid
-- the token has expired
-- the user behind the token is disabled
+- 没有传 `Authorization` 请求头
+- Bearer Token 格式错误
+- API Key 已删除或无效
+- API Key 所属用户被禁用
 
-### Model not available
+### 余额不足
 
-This often means:
+请求认证通过，但账号余额或额度不足。请充值或联系管理员调整额度。
 
-- the token has model restrictions
-- your user group cannot use that model
-- the model is disabled by the platform
+### 模型不可用
+
+可能是模型没有开启、当前分组不可用，或 API Key 限制了模型范围。
